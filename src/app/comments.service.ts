@@ -1,9 +1,21 @@
 import { Injectable } from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CommentsService {
   
   constructor() {}
+
+  public getUsersFirstComment(name: string) {
+    return this.fetchUserDetails(name).then((user: any) => {
+       return this.fetchPosts(user.id)
+    }).then((posts: any[]) => {
+       return this.fetchComments(posts[0].id)
+    }).then((comments) => {
+       return comments;
+    })
+  }
 
   private fetchUserDetails(name: string) {
     return new Promise((resolve, reject) => {
